@@ -6,12 +6,12 @@ Created on Thu Aug  8 12:52:18 2019
 """
 import tkinter as tk
 
-wirearray=[]
-serialnumber=''
-wireNumber=0 #want to use it for adding block to visualize wires
+wirearray=[] #tracks wires inputted and order(wire values added using createWire function)
+serialnumber='' #initialize as blank
+wireNumber=0 #want to use it for adding block to visualize wires. Keeps track of the last wire inserted 
 position=[1,2,3,4,5,6]
 def wires():
-    global wirearray
+    global wirearray #ensuring the variables are defined and usable outside the functions scope
     global serialnumber
     if type(serialnumber) != int:
         return messageLbl.config(text='Serial number must be an interger')
@@ -38,12 +38,13 @@ def wires():
             return messageLbl.config(text='Cut the last blue wire')
         else:
             return messageLbl.config(text='Cut the last wire')
+    #four wires 
     elif length == 4:
         for i in range(length):
             if wirearray[i]==1: valcheck += 1
             elif wirearray[i]==5: valcheck2 += 1
             else: pass
-        if valcheck >= 2 and serialnumber%2==1:
+        if valcheck >= 2 and serialnumber%2==1:#check if serial number is odd
             return messageLbl.config(text='Cut last red wire')
         elif wirearray[3]==2 and valcheck==0:
             return messageLbl.config(text='Cut the first wire')
@@ -51,6 +52,7 @@ def wires():
             return messageLbl.config(text='Cut the first wire')
         else: 
             return messageLbl.config(text='Cut the second wire')
+    #five wires
     elif length == 5:
         for i in range(length):
             if wirearray[i]==1: valcheck+=1
@@ -83,7 +85,7 @@ def wires():
     elif length > 6: return messageLbl.config(text='Too many wires! Retry enter arrangement again')
 
 def createRed():
-    wirearray.append(1)
+    wirearray.append(1) # 1 is representative of red wire
     global wireNumber
     if wireNumber==0:wire1.config(bg='red')
     elif wireNumber==1:wire2.config(bg='red')
@@ -96,7 +98,7 @@ def createRed():
     return
 
 def createYellow():
-    wirearray.append(2)
+    wirearray.append(2) #2 is representative of yellow wire 
     global wireNumber
     if wireNumber==0:wire1.config(bg='yellow')
     elif wireNumber==1:wire2.config(bg='yellow')
@@ -173,21 +175,16 @@ def close():
     window.destroy()
 #now we are done defining the functions 
 
+#Set up root and GUI structure
 window = tk.Tk()
 window.title('Automated Bomb Manual')
 window.geometry('500x125')
 
-# =============================================================================
-# tab_control = tk.notebook(window)
-# tab1 = tk.frame(tab_control)
-# tab2 = tk.frame(tab_control)
-# tab_control.add(tab1, text='Simple Wires')
-# tab_control.add(tab2, text='Button')
-# =============================================================================
-
 #lbl=tk.Label(window, text='Select wire color:')
 #lbl.grid()
-#creating wire colors
+
+#creating wire selection buttons
+#Notice how useful it is to use the grid function, then just use padx for spacing 
 btnred = tk.Button(window, text="Red", bg='red', fg='black', cursor='hand2', command=createRed)
 btnred.grid(column=0, row=1, padx=10)
 
@@ -218,6 +215,7 @@ btnreset.grid(column=5, row=1, padx=10)
 btnsolve = tk.Button(window, text="Solve!", bg='green', activebackground='light green', fg='black', cursor='hand2',command=wires)
 btnsolve.grid(column=3, row=3, padx=10)
 
+# messageLbl.config(text='NEW TEXT') to rewrite text without destroying old boxes
 messageLbl=tk.Label(window, text='', wraplength=150)
 messageLbl.place(x=350,y=83)
 
@@ -249,7 +247,7 @@ window.mainloop()
                 
 ##        print(wirearray)
 ##        print(length)
-#        use%for serial number
+#        use for serial number
 #            r=1
 #            y=2
 #            blk=3
